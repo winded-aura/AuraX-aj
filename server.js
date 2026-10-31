@@ -16,12 +16,12 @@ wss.on('connection', (ws, req) => {
   }
   console.log("Authorized client connected!");
 
-  // NEW: Send a brainrot every 5 seconds to the Roblox client
+  // Send a brainrot every 5 seconds to the Roblox client
   const interval = setInterval(() => {
     const brainrot = {
       name: "Tralalero Tralala",
       income: Math.floor(Math.random() * 50000) + 1000,
-      jobId: "ec368a3c-89db-4b9f-8be5-1d8dab6ec42d", // Replace with real job IDs later
+      jobId: "ec368a3c-89db-4b9f-8be5-1d8dab6ec42d", 
       isGold: Math.random() < 0.2 // 20% chance to be gold
     };
     ws.send(JSON.stringify(brainrot));
