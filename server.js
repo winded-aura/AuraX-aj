@@ -22,11 +22,11 @@ wss.on('connection', (ws, req) => {
       event: "finding", // The leaked script requires this exact event name
       data: {
         brainrot: {
-          name: "(daddy winded) Tralalero Tralala",
+          name: "(daddy winded) Tralalero Tralala", // Added the prefix here!
           income_per_second: Math.floor(Math.random() * 50000) + 1000,
-          category: "OG" // Options: OG, Giga, Chud
+          category: "OG" // OG, Giga, or Chud
         },
-        place_id: game_place_id, // We will use the current place ID
+        place_id: 109983668079237, // Real Steal a Brainrot Place ID
         job_id: "ec368a3c-89db-4b9f-8be5-1d8dab6ec42d", // Fake Job ID for testing
         players: Math.floor(Math.random() * 12) + 1,
         observed_at_ms: Date.now()
