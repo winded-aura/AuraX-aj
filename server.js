@@ -16,19 +16,24 @@ wss.on('connection', (ws, req) => {
   }
   console.log("Authorized client connected!");
 
-  // Send a fake "finding" every 5 seconds
+  // 1. TELL THE SCRIPT WE ARE READY (Clears the "Connecting" status)
+  ws.send(JSON.stringify({
+    event: "connection.ready"
+  }));
+
+  // 2. Send a fake "finding" every 5 seconds
   const interval = setInterval(() => {
     const payload = {
-      event: "finding", // The leaked script requires this exact event name
+      event: "finding",
       data: {
         brainrot: {
-          name: "(daddy winded) Tralalero Tralala", // Added the prefix here!
-          income_per_second: Math.floor(Math.random() * 50000) + 1000,
-          category: "OG" // OG, Giga, or Chud
+          name: "(daddy winded) Tralalero Tralala",
+          income_per_second: 50000, // High income to trigger Auto-Join
+          category: "OG"
         },
-        place_id: 109983668079237, // Real Steal a Brainrot Place ID
-        job_id: "ec368a3c-89db-4b9f-8be5-1d8dab6ec42d", // Fake Job ID for testing
-        players: Math.floor(Math.random() * 12) + 1,
+        place_id: 109983668079237,
+        job_id: "ec368a3c-89db-4b9f-8be5-1d8dab6ec42d", 
+        players: 5,
         observed_at_ms: Date.now()
       }
     };
