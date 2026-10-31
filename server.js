@@ -16,34 +16,46 @@ wss.on('connection', (ws, req) => {
   }
   console.log("Authorized client connected!");
 
-  // Send READY as an object
-  ws.send(JSON.stringify({
+  // 1. Send READY immediately (wrapped in [ ] for the leaked script)
+  ws.send(JSON.stringify([{
     event: "connection.ready"
-  }));
+  }]));
 
-  // Send FINDING as an object
-  setTimeout(() => {
-    const interval = setInterval(() => {
-      const payload = {
-        event: "finding",
-        data: {
-          brainrot: {
-            name: "(daddy winded) Tralalero Tralala",
-            income_per_second: 50000, 
-            category: "OG"
-          },
-          place_id: 109983668079237, 
-          job_id: "ec368a3c-89db-4b9f-8be5-1d8dab6ec42d", 
-          players: 5,
-          observed_at_ms: Date.now()
-        }
-      };
+  // 2. Listen for PINGS and reply with PONGS
+  ws.on('message', (message) => {
+    try {
+      let parsed = JSON.parse(message);
+      let data = Array.isArray(parsed) ? parsed[0] : parsed;
       
-      ws.send(JSON.stringify(payload)); // NO BRACKETS HERE
-    }, 5000);
+      if (data.event === "ping") {
+        ws.send(JSON.stringify([{
+          event: "pong",
+          nonce: data.nonce
+        }]));
+      }
+    } catch (e) {}
+  });
 
-    ws.on('close', () => clearInterval(interval));
-  }, 1000); 
+  // 3. Send FINDINGS every 5 seconds
+  const interval = setInterval(() => {
+    const payload = {
+      event: "finding",
+      data: {
+        brainrot: {
+          name: "(daddy winded) Tralalero Tralala",
+          income_per_second: 50000, 
+          category: "OG"
+        },
+        place_id: 109983668079237, 
+        job_id: "ec368a3c-89db-4b9f-8be5-1d8dab6ec42d", 
+        players: 5,
+        observed_at_ms: Date.now()
+      }
+    };
+    ws.send(JSON.stringify([payload]));
+  }, 5000);
+
+  ws.on('close', () => clearInterval(interval));
 });
 
 const PORT = process.env.PORT || 8080;
