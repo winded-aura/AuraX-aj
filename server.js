@@ -16,12 +16,12 @@ wss.on('connection', (ws, req) => {
   }
   console.log("Authorized client connected!");
 
-  // 1. Send READY immediately (wrapped in [ ] for the leaked script)
+  // Send READY wrapped in an array
   ws.send(JSON.stringify([{
     event: "connection.ready"
   }]));
 
-  // 2. Listen for PINGS and reply with PONGS
+  // Reply to Pings with Pongs
   ws.on('message', (message) => {
     try {
       let parsed = JSON.parse(message);
@@ -36,7 +36,7 @@ wss.on('connection', (ws, req) => {
     } catch (e) {}
   });
 
-  // 3. Send FINDINGS every 5 seconds
+  // Send FINDINGS
   const interval = setInterval(() => {
     const payload = {
       event: "finding",
