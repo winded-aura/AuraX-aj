@@ -16,27 +16,21 @@ wss.on('connection', (ws, req) => {
   }
   console.log("Authorized client connected!");
 
-  // Send READY immediately
+  // MUST BE WRAPPED IN [ ] 
   ws.send(JSON.stringify([{
     event: "connection.ready"
   }]));
 
-  // Handle Pings so it doesn't disconnect
   ws.on('message', (message) => {
     try {
       let parsed = JSON.parse(message);
       let data = Array.isArray(parsed) ? parsed[0] : parsed;
-      
       if (data.event === "ping") {
-        ws.send(JSON.stringify([{
-          event: "pong",
-          nonce: data.nonce
-        }]));
+        ws.send(JSON.stringify([{ event: "pong", nonce: data.nonce }]));
       }
     } catch (e) {}
   });
 
-  // Send FINDINGS
   const interval = setInterval(() => {
     const payload = {
       event: "finding",
