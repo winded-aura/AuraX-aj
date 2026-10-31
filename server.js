@@ -16,12 +16,12 @@ wss.on('connection', (ws, req) => {
   }
   console.log("Authorized client connected!");
 
-  // Send READY wrapped in an array
+  // Send READY immediately
   ws.send(JSON.stringify([{
     event: "connection.ready"
   }]));
 
-  // Reply to Pings with Pongs
+  // Handle Pings so it doesn't disconnect
   ws.on('message', (message) => {
     try {
       let parsed = JSON.parse(message);
