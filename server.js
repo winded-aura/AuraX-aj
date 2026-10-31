@@ -16,29 +16,28 @@ wss.on('connection', (ws, req) => {
   }
   console.log("Authorized client connected!");
 
-  // 1. Send READY (Must be wrapped in an array [ ])
+  // 1. Send READY exactly how the script wants it
   ws.send(JSON.stringify([{
     event: "connection.ready"
   }]));
 
-  // 2. Send FINDING (Also wrapped in an array [ ])
+  // 2. Send the FINDING data every 5 seconds
   const interval = setInterval(() => {
     const payload = {
       event: "finding",
       data: {
         brainrot: {
           name: "(daddy winded) Tralalero Tralala",
-          income_per_second: 50000, 
+          income_per_second: 50000, // High income so it triggers Auto-Join
           category: "OG"
         },
-        place_id: 109983668079237, // Real game place ID
+        place_id: 109983668079237, // Steal a Brainrot ID
         job_id: "ec368a3c-89db-4b9f-8be5-1d8dab6ec42d", 
         players: 5,
         observed_at_ms: Date.now()
       }
     };
     
-    // Notice the [ ] around payload here
     ws.send(JSON.stringify([payload]));
   }, 5000);
 
